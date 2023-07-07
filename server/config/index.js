@@ -14,7 +14,6 @@ module.exports = {
         enabled: false,
         config: {
           from: 'noreply@strapi.io',
-          subject: 'New Contact Form Submission',
         }
       }
     ]
