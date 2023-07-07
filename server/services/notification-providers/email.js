@@ -11,7 +11,7 @@ module.exports = ({strapi}) => ({
         await strapi.plugins['email'].services.email.send({
           to: recipient.email,
           from: config.from,
-          subject: config.subject ? config.subject : 'New Contact Form Submission',
+          subject: config.subject ? config.subject : 'New Form Submission',
           text: message,
         })
       } catch (e) {
