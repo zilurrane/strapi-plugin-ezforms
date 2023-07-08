@@ -8,19 +8,20 @@ module.exports = ({ strapi }) => ({
     let formattedTableData = strapi.plugin('ezforms').service('formatData').formatHtmlData(data)
     //loop through the recipients and send an email
     for (let recipient of recipients) {
-      try {
-        await strapi.plugins['email'].services.email.send({
-          to: recipient.email,
-          from: config.from,
-          subject: config.subject ? config.subject : `New ${formName} Submission`,
-          html: formSubmissionTemplate(formattedTableData),
-          attachments: [
+      try {        
+       const attachments = data.resume ? [
             {
               filename: data.resume,
               path: data.resume,
               cid: data.resume
             }
-          ]
+          ] : [];        
+        await strapi.plugins['email'].services.email.send({
+          to: recipient.email,
+          from: config.from,
+          subject: config.subject ? config.subject : `New ${formName} Submission`,
+          html: formSubmissionTemplate(formattedTableData),
+          attachments
         })
       } catch (e) {
         strapi.log.error(e)
