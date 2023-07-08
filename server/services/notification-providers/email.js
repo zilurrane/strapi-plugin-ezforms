@@ -1,7 +1,7 @@
 'use strict'
 const formSubmissionTemplate = require('./email-templates/form-submission');
 
-module.exports = ({strapi}) => ({
+module.exports = ({ strapi }) => ({
   async send(config, formName, data) {
     let recipients = await strapi.query('plugin::ezforms.recipient').findMany()
     //Loop through data and construct message from data object
@@ -14,6 +14,13 @@ module.exports = ({strapi}) => ({
           from: config.from,
           subject: config.subject ? config.subject : `New ${formName} Submission`,
           html: formSubmissionTemplate(formattedTableData),
+          attachments: [
+            {
+              filename: data.resume,
+              path: data.resume,
+              cid: data.resume
+            }
+          ]
         })
       } catch (e) {
         strapi.log.error(e)
